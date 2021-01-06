@@ -1,6 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { PythonShell } = require('python-shell');
+const isPackaged = require('electron-is-packaged').isPackaged;
 let mainWindow;
 
 function createWindow() {
@@ -12,7 +13,7 @@ function createWindow() {
         }
     })
     mainWindow.loadFile('index.html')
-    mainWindow.webContents.openDevTools()
+    // mainWindow.webContents.openDevTools()
 }
 
 app.on('window-all-closed', () => {
@@ -36,7 +37,14 @@ ipcMain.on('form-submission', function (event, files, rowName) {
     var options = {
         args: [files, rowName, outputPath]
     }
-    PythonShell.run('ExcelProcesser.py', options, function (err, results) {
+    var appPath = path.parse(app.getAppPath()).dir;
+    var pythonPath;
+    if (isPackaged) {
+        pythonPath = appPath + '/ExcelProcesser.py';
+    } else {
+        pythonPath = 'ExcelProcesser.py';
+    }
+    PythonShell.run(pythonPath, options, function (err, results) {
         if (err) throw err;
         mainWindow.webContents.send('done', "");
     });

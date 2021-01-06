@@ -5,15 +5,82 @@
   "main": "main.js",
   "scripts": {
     "start": "electron .",
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build:osx": "electron-builder --mac",
+    "build:linux": "npm run build:linux32 && npm run build:linux64",
+    "build:linux32": "electron-builder --linux --ia32",
+    "build:linux64": "electron-builder --linux --x64",
+    "build:win": "npm run build:win32 && npm run build:win64",
+    "build:win32": "electron-builder --win --ia32",
+    "build:win64": "electron-builder --win --x64",
+    "build": "electron-builder -mwl"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "devDependencies": {
-    "electron": "^11.1.1"
+    "electron": "^11.1.1",
+    "electron-builder": "^22.9.1",
+    "electron-packager": "^15.2.0"
   },
   "dependencies": {
+    "electron-is-packaged": "^1.0.2",
     "python-shell": "^2.0.3"
+  },
+  "build": {
+    "productName": "PushExcelDivider",
+    "appId": "com.coooldoggy.pushexceldivider",
+    "asar": true,
+    "extraResources": "ExcelProcesser.py",
+    "protocols": {
+      "name": "PushExcelDivider",
+      "schemes": [
+        "PushExcelDivider"
+      ]
+    },
+    "mac": {
+      "target": [
+        "default"
+      ],
+      "icon": "./electron-root/favicon.ico"
+    },
+    "dmg": {
+      "title": "PushExcelDivider",
+      "icon": "./electron-root/favicon.ico"
+    },
+    "win": {
+      "target": [
+        "zip",
+        "nsis"
+      ],
+      "icon": "./electron-root/favicon.ico"
+    },
+    "linux": {
+      "target": [
+        "AppImage",
+        "deb",
+        "rpm",
+        "zip",
+        "tar.gz"
+      ],
+      "icon": "./electron-root/favicon.ico"
+    },
+    "nsis": {
+      "oneClick": false,
+      "allowToChangeInstallationDirectory": false,
+      "installerLanguages": [
+        "en_US",
+        "ko_KR"
+      ],
+      "language": "1042"
+    },
+    "directories": {
+      "buildResources": "resources/installer/",
+      "output": "build/",
+      "app": "."
+    }
+  },
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com/"
   }
 }
