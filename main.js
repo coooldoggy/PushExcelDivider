@@ -32,13 +32,12 @@ app.on('ready', () => {
 })
 
 ipcMain.on('form-submission', function (event, files, rowName) {
-    console.log(files);
-    console.log(rowName);
+    var outputPath = path.parse(files).dir;
     var options = {
-        args: [files, rowName]
+        args: [files, rowName, outputPath]
     }
     PythonShell.run('ExcelProcesser.py', options, function (err, results) {
         if (err) throw err;
-        console.log('result: %j', results);
+        mainWindow.webContents.send('done', "");
     });
 });
