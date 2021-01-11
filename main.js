@@ -1,8 +1,11 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { PythonShell } = require('python-shell');
+const { spawn } = require('child_process');
 const isPackaged = require('electron-is-packaged').isPackaged;
 let mainWindow;
+const PY_DIST_FOLDER = 'pydist'
+const PY_MODULE = 'ExcelProcesser'
 
 function createWindow() {
     mainWindow = new BrowserWindow({
@@ -32,20 +35,34 @@ app.on('ready', () => {
     createWindow();
 })
 
+// const guessDistPackaged = () => {
+//     const fullPath = path.join(__dirname, PY_DIST_FOLDER)
+//     return require('fs').existsSync(fullPath)
+// }
+
+const getScriptPath = () => {
+    var appPath = path.parse(app.getAppPath()).dir;
+    if (!isPackaged) {
+        return path.join(__dirname, PY_MODULE + '.py')
+    }
+    return path.join(appPath, PY_DIST_FOLDER, PY_MODULE)
+}
+
 ipcMain.on('form-submission', function (event, files, rowName) {
     var outputPath = path.parse(files).dir;
     var options = {
         args: [files, rowName, outputPath]
     }
-    var appPath = path.parse(app.getAppPath()).dir;
-    var pythonPath;
+    var pythonPath = getScriptPath();
     if (isPackaged) {
-        pythonPath = appPath + '/ExcelProcesser.py';
+        spawn(pythonPath, options, function (err, results) {
+            if (err) throw err;
+            mainWindow.webContents.send('done', "");
+        });
     } else {
-        pythonPath = 'ExcelProcesser.py';
+        PythonShell.run(pythonPath, options, function (err, results) {
+            if (err) throw err;
+            mainWindow.webContents.send('done', "");
+        });
     }
-    PythonShell.run(pythonPath, options, function (err, results) {
-        if (err) throw err;
-        mainWindow.webContents.send('done', "");
-    });
 });
