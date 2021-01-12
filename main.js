@@ -1,7 +1,7 @@
 const { app, BrowserWindow, ipcMain } = require('electron');
 const path = require('path');
 const { PythonShell } = require('python-shell');
-const { spawn } = require('child_process');
+const { spawn, execFile } = require('child_process');
 const isPackaged = require('electron-is-packaged').isPackaged;
 let mainWindow;
 const PY_DIST_FOLDER = 'pydist'
@@ -35,17 +35,19 @@ app.on('ready', () => {
     createWindow();
 })
 
-// const guessDistPackaged = () => {
-//     const fullPath = path.join(__dirname, PY_DIST_FOLDER)
-//     return require('fs').existsSync(fullPath)
-// }
+const guessDistPackaged = () => {
+    const fullPath = path.join(__dirname, PY_DIST_FOLDER)
+    return require('fs').existsSync(fullPath)
+}
 
 const getScriptPath = () => {
-    var appPath = path.parse(app.getAppPath()).dir;
-    if (!isPackaged) {
-        return path.join(__dirname, PY_MODULE + '.py')
-    }
-    return path.join(appPath, PY_DIST_FOLDER, PY_MODULE)
+    // if (!guessDistPackaged()) {
+    //     return path.join(__dirname, PY_MODULE + '.py')
+    // }
+    // if (process.platform === 'win32') {
+    //     return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE + '.exe')
+    // }
+    return path.join(__dirname, PY_DIST_FOLDER, PY_MODULE, PY_MODULE)
 }
 
 ipcMain.on('form-submission', function (event, files, rowName) {
@@ -53,16 +55,18 @@ ipcMain.on('form-submission', function (event, files, rowName) {
     var options = {
         args: [files, rowName, outputPath]
     }
+    const arguments = [files, rowName, outputPath];
     var pythonPath = getScriptPath();
-    if (isPackaged) {
-        spawn(pythonPath, options, function (err, results) {
-            if (err) throw err;
-            mainWindow.webContents.send('done', "");
-        });
-    } else {
-        PythonShell.run(pythonPath, options, function (err, results) {
-            if (err) throw err;
-            mainWindow.webContents.send('done', "");
-        });
-    }
+    // if (guessDistPackaged()) {
+    // var ls = require('child_process').execFile(pythonPath, arguments);
+    const ls = spawn(pythonPath, [files, rowName, outputPath], { shell: true });
+    ls.on('close', (code) => {
+        mainWindow.webContents.send('done', outputPath);
+    });
+    // } else {
+    //     PythonShell.run(pythonPath, options, function (err, results) {
+    //         if (err) throw err;
+    //         mainWindow.webContents.send('done', outputPath);
+    //     });
+    // }
 });

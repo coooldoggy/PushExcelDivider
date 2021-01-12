@@ -1,0 +1,12 @@
+{
+  "base_url": "/",
+  "hostname": "localhost",
+  "notebook_dir": "/Users/ats/Downloads",
+  "password": false,
+  "pid": 25884,
+  "port": 8888,
+  "secure": false,
+  "sock": "",
+  "token": "dcfdfc21ed391f1c268b4be85f3414d0458cd7bb7409c519",
+  "url": "http://localhost:8888/"
+}

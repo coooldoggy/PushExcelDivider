@@ -25,5 +25,6 @@ function hideprogress() {
 }
 
 ipcRenderer.on('done', function (event, args) {
+    alert(`위치: ${args}`);
     hideprogress();
 });
