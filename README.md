@@ -39,7 +39,7 @@ wine64 msiexec /i python-2.7.9.amd64.msi /qb
 ```
 cd ~/.wine/drive_c/Python27
 
-wine64 python.exe Scripts/pip.exe install pyinstaller
+wine64 python.exe Scripts/pip2.7.exe install pyinstaller==3.5
 ```
 
 #### pyinstaller로 exe 만들기 
