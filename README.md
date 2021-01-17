@@ -47,3 +47,47 @@ wine64 python.exe Scripts/pip2.7.exe install pyinstaller==3.5
 ```
 wine64 ~/.wine/drive_c/Python27/Scripts/pyinstaller.exe --onefile Pythonfile.py
 ```
+
+#### Window Exe File Error 해결
+
+ModuleNotFoundError: No module named 'pandas'
+
+1. Exe File 생성
+```
+pyinstaller -F PythonFile.py
+```
+
+2. .spec file  수정 : 아래 코드 추가 
+```
+def get_pandas_path():
+    import pandas
+    pandas_path = pandas.__path__[0]
+    return pandas_path
+
+dict_tree = Tree(get_pandas_path(), prefix='pandas', excludes=["*.pyc"])
+a.datas += dict_tree
+a.binaries = filter(lambda x: 'pandas' not in x[0], a.binaries)
+```
+
+3. spec file로 재빌드 
+```
+pyinstaller -F PythonFile.spec
+```
+
+ModuleNotFoundError: No module named 'openpyxl' 
+
+1. Exe File 생성
+```
+pyinstaller -F PythonFile.py
+```
+
+2. .spec file  수정 : 아래 코드 추가 
+```
+a = Analysis([
+             hiddenimports=['openpxl'],
+         )
+```
+3. spec file로 재빌드 
+```
+pyinstaller -F PythonFile.spec
+```
