@@ -50,7 +50,7 @@ wine64 ~/.wine/drive_c/Python27/Scripts/pyinstaller.exe --onefile Pythonfile.py
 
 #### Window Exe File Error 해결
 
-ModuleNotFoundError: No module named 'pandas'
+##### ModuleNotFoundError: No module named 'pandas'
 
 1. Exe File 생성
 ```
@@ -74,7 +74,7 @@ a.binaries = filter(lambda x: 'pandas' not in x[0], a.binaries)
 pyinstaller -F PythonFile.spec
 ```
 
-ModuleNotFoundError: No module named 'openpyxl' 
+##### ModuleNotFoundError: No module named 'openpyxl' 
 
 1. Exe File 생성
 ```
