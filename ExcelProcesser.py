@@ -23,7 +23,7 @@ def main(argv):
     n = 1000
     i = 0
     for i in range(0, len(rowArray), n):
-        df['CTN'][i:i+n].to_csv("{}/{}.txt".format(path, i),
+        df['CTN'][i:i+n].to_csv("{}/{}.txt".format(path, i+1000),
                                 mode='w', index=False, header=False)
         i += 1000
 
