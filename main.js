@@ -3,6 +3,7 @@ const path = require('path');
 const { PythonShell } = require('python-shell');
 const { spawn, execFile } = require('child_process');
 const isPackaged = require('electron-is-packaged').isPackaged;
+const { platform } = require('os');
 let mainWindow;
 const PY_DIST_FOLDER = 'pydist'
 const PY_MODULE = 'ExcelProcesser'
@@ -59,10 +60,18 @@ ipcMain.on('form-submission', function (event, files, rowName) {
     var pythonPath = getScriptPath();
     // if (guessDistPackaged()) {
     // var ls = require('child_process').execFile(pythonPath, arguments);
-    const ls = spawn(pythonPath, [files, rowName, outputPath], { shell: true });
-    ls.on('close', (code) => {
-        mainWindow.webContents.send('done', outputPath);
-    });
+    console.log(pythonPath)
+    if (platform == "win32") {
+        const ls = execFile(pythonPath, [files, rowName, outputPath]);
+        ls.on('close', (code) => {
+            mainWindow.webContents.send('done', outputPath, code);
+        });
+    } else {
+        const ls = spawn(pythonPath, [files, rowName, outputPath], { shell: true });
+        ls.on('close', (code) => {
+            mainWindow.webContents.send('done', outputPath, code);
+        });
+    }
     // } else {
     //     PythonShell.run(pythonPath, options, function (err, results) {
     //         if (err) throw err;

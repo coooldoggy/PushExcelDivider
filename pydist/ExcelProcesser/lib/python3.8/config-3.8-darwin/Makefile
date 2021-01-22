@@ -30,8 +30,8 @@ MODLIBS=           $(LOCALMODLIBS) $(BASEMODLIBS)
 VERSION=	3.8
 srcdir=		.
 
-abs_srcdir=	/private/tmp/python@3.8-20200721-20005-1n5bn6z/Python-3.8.5
-abs_builddir=	/private/tmp/python@3.8-20200721-20005-1n5bn6z/Python-3.8.5
+abs_srcdir=	/private/tmp/python-3.8-20210113-11637-1uu5nl6/Python-3.8.7
+abs_builddir=	/private/tmp/python-3.8-20210113-11637-1uu5nl6/Python-3.8.7
 
 
 CC=		clang
@@ -81,7 +81,7 @@ MAKESETUP=      $(srcdir)/Modules/makesetup
 OPT=		-DNDEBUG -g -fwrapv -O3 -Wall
 BASECFLAGS=	 -Wno-unused-result -Wsign-compare -Wunreachable-code -fno-common -dynamic
 BASECPPFLAGS=	
-CONFIGURE_CFLAGS=	-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -I/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers
+CONFIGURE_CFLAGS=	-I/usr/local/include -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers
 # CFLAGS_NODIST is used for building the interpreter and stdlib C extensions.
 # Use it when a compiler flag should _not_ be part of the distutils CFLAGS
 # once Python is installed (Issue #21121).
@@ -90,8 +90,8 @@ CONFIGURE_CFLAGS_NODIST= -std=c99 -Wextra -Wno-unused-result -Wno-unused-paramet
 # Use it when a linker flag should _not_ be part of the distutils LDFLAGS
 # once Python is installed (bpo-35257)
 CONFIGURE_LDFLAGS_NODIST=
-CONFIGURE_CPPFLAGS=	
-CONFIGURE_LDFLAGS=	-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk
+CONFIGURE_CPPFLAGS=	-I/usr/local/include
+CONFIGURE_LDFLAGS=	-L/usr/local/lib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk
 # Avoid assigning CFLAGS, LDFLAGS, etc. so users can use them on the
 # command line to append to these values without stomping the pre-set
 # values.
@@ -174,7 +174,7 @@ PYTHONFRAMEWORKINSTALLDIR= /usr/local/opt/python@3.8/Frameworks/Python.framework
 # Deployment target selected during configure, to be checked
 # by distutils. The export statement is needed to ensure that the
 # deployment target is active during build.
-MACOSX_DEPLOYMENT_TARGET=10.15
+MACOSX_DEPLOYMENT_TARGET=11
 export MACOSX_DEPLOYMENT_TARGET
 
 # Option to install to strip binaries
@@ -187,7 +187,7 @@ LIPO_32BIT_FLAGS=
 OTHER_LIBTOOL_OPT=
 
 # Environment to run shared python without installed libraries
-RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/python@3.8-20200721-20005-1n5bn6z/Python-3.8.5
+RUNSHARED=       DYLD_FRAMEWORK_PATH=/private/tmp/python-3.8-20210113-11637-1uu5nl6/Python-3.8.7
 
 # ensurepip options
 ENSUREPIP=      no
@@ -204,7 +204,7 @@ EXEMODE=	755
 FILEMODE=	644
 
 # configure script arguments
-CONFIG_ARGS=	 '--prefix=/usr/local/opt/python@3.8' '--enable-ipv6' '--datarootdir=/usr/local/opt/python@3.8/share' '--datadir=/usr/local/opt/python@3.8/share' '--enable-framework=/usr/local/opt/python@3.8/Frameworks' '--enable-loadable-sqlite-extensions' '--without-ensurepip' '--with-dtrace' '--with-openssl=/usr/local/opt/openssl@1.1' 'MACOSX_DEPLOYMENT_TARGET=10.15' 'CFLAGS=-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk -I/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/usr/include -I/Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers' 'LDFLAGS=-isysroot /Library/Developer/CommandLineTools/SDKs/MacOSX10.15.sdk' 'CC=clang' 'PKG_CONFIG_PATH=/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/readline/lib/pkgconfig:/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig' 'PKG_CONFIG_LIBDIR=/usr/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig/10.15'
+CONFIG_ARGS=	 '--prefix=/usr/local/opt/python@3.8' '--enable-ipv6' '--datarootdir=/usr/local/opt/python@3.8/share' '--datadir=/usr/local/opt/python@3.8/share' '--enable-framework=/usr/local/opt/python@3.8/Frameworks' '--enable-loadable-sqlite-extensions' '--without-ensurepip' '--with-dtrace' '--with-openssl=/usr/local/opt/openssl@1.1' 'MACOSX_DEPLOYMENT_TARGET=11' 'CFLAGS=-I/usr/local/include -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/include -I/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/System/Library/Frameworks/Tk.framework/Versions/8.5/Headers' 'LDFLAGS=-L/usr/local/lib -isysroot /Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk' 'CPPFLAGS=-I/usr/local/include' 'CC=clang' 'PKG_CONFIG_PATH=/usr/local/opt/openssl@1.1/lib/pkgconfig:/usr/local/opt/readline/lib/pkgconfig:/usr/local/opt/sqlite/lib/pkgconfig:/usr/local/opt/xz/lib/pkgconfig' 'PKG_CONFIG_LIBDIR=/usr/lib/pkgconfig:/usr/local/Homebrew/Library/Homebrew/os/mac/pkgconfig/11'
 
 
 # Subdirectories with code
@@ -229,7 +229,7 @@ LDLIBRARYDIR=
 INSTSONAME=	$(LDLIBRARY)
 
 
-LIBS=		-ldl   -framework CoreFoundation
+LIBS=		-lintl -ldl   -framework CoreFoundation
 LIBM=		
 LIBC=		
 SYSLIBS=	$(LIBM) $(LIBC)
@@ -248,8 +248,8 @@ PYTHON_FOR_REGEN=python3
 UPDATE_FILE=python3 $(srcdir)/Tools/scripts/update_file.py
 PYTHON_FOR_BUILD=./$(BUILDPYTHON) -E
 _PYTHON_HOST_PLATFORM=
-BUILD_GNU_TYPE=	x86_64-apple-darwin19.5.0
-HOST_GNU_TYPE=	x86_64-apple-darwin19.5.0
+BUILD_GNU_TYPE=	x86_64-apple-darwin20.2.0
+HOST_GNU_TYPE=	x86_64-apple-darwin20.2.0
 
 # Tcl and Tk config info from --with-tcltk-includes and -libs options
 TCLTK_INCLUDES=	
@@ -278,6 +278,7 @@ SITEPATH=
 DESTPATH=
 MACHDESTLIB=$(BINLIBDEST)
 DESTLIB=$(LIBDEST)
+
 
 
 ##########################################################################

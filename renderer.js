@@ -24,7 +24,7 @@ function hideprogress() {
     document.getElementById("container").style.display = "none";
 }
 
-ipcRenderer.on('done', function (event, args) {
-    alert(`위치: ${args}`);
+ipcRenderer.on('done', function (event, args, code) {
+    alert(`resultCode: ${code} \n위치: ${args}`);
     hideprogress();
 });

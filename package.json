@@ -17,7 +17,7 @@
     "build:deploy": "npm run build:win64 && electron-builder --mac"
   },
   "keywords": [],
-  "author": "",
+  "author": "Yulim Lee",
   "license": "ISC",
   "devDependencies": {
     "electron": "^11.1.1",
@@ -60,7 +60,6 @@
     },
     "win": {
       "target": [
-        "zip",
         "nsis"
       ],
       "icon": "./electron-root/favicon.ico"
