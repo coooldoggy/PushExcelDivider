@@ -22,12 +22,10 @@ def main(argv):
         os.mkdir(path)
     n = 1000
     i = 0
-    j = 1
     for i in range(0, len(rowArray), n):
-        df['CTN'][i:i+n].to_csv("{}/output{}.txt".format(path, j),
+        df['CTN'][i:i+n].to_csv("{}/{}.txt".format(path, i),
                                 mode='w', index=False, header=False)
         i += 1000
-        j += 1
 
 
 if __name__ == '__main__':
